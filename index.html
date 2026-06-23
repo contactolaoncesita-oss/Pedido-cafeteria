@@ -957,6 +957,7 @@ async function enviarPedido() {
  body: JSON.stringify(data)
  });
  mostrarExito(data);
+  await guardarPedidoEnContabilidad(data);
  } catch (err) {
  netEl.classList.add('on');
  netEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -965,7 +966,21 @@ async function enviarPedido() {
  }
 }
 
-/* ══ BUILD JSON ══ */
+const PANEL_URL = 'https://script.google.com/macros/s/AKfycbzA12Sd1nq2RyXSQ1U-s7fvT82e-Vyx0oQbUER_VykcxGWb7Nvp2SB2yPXr8qcx991K/exec';
+
+async function guardarPedidoEnContabilidad(pedido) {
+  if (PANEL_URL) {
+    try {
+      await fetch(PANEL_URL, {
+        method: 'POST', mode: 'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ action: 'nuevo_pedido', pedido })
+      });
+    } catch(e) { console.warn('Error:', e.message); }
+  }
+} 
+ 
+ /* ══ BUILD JSON ══ */
 function buildOrderJSON() {
  const prods = PRODUCTOS
  .filter(p => qtys[p.id] > 0)
