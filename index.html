@@ -1136,7 +1136,7 @@ async function enviarPedido() {
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         action: 'guardar_cliente',
-        rut: data.cliente.rut,
+        rut: limpiarRut(data.cliente.rut),
         local: data.cliente.local,
         calle: data.cliente.direccion.calle,
         numero: data.cliente.direccion.numero,
